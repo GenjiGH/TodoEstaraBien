@@ -3,49 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <title>Todo estará bien 💜</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       background: radial-gradient(circle at center, #6a0dad, #2a0144);
-      overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
       color: white;
       text-align: center;
+      overflow: hidden;
     }
 
-    h1 {
-      font-size: 2.5em;
-      margin: 0.5em 0;
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      position: relative;
+    }
+
+    .message, .gif-container {
+      position: absolute;
       opacity: 0;
-      animation: fadeIn 3s ease-in-out forwards;
+      transition: opacity 1s ease-in-out;
     }
 
-    h1:nth-of-type(1) { animation-delay: 0s; }
-    h1:nth-of-type(2) { animation-delay: 4s; }
-
-    .gif-message {
-      margin-top: 1em;
-      opacity: 0;
-      animation: fadeIn 3s ease-in-out forwards;
-      animation-delay: 8s;
+    .message.show, .gif-container.show {
+      opacity: 1;
     }
 
-    .gif-message img {
+    .message h1 {
+      font-size: 2em;
+      margin: 0.5em;
+      padding: 0 1em;
+    }
+
+    .gif-container img {
       max-width: 90vw;
       max-height: 60vh;
       border-radius: 20px;
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .particles {
@@ -61,7 +61,7 @@
       position: absolute;
       width: 4px;
       height: 4px;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.7);
       border-radius: 50%;
       animation: move 10s linear infinite;
     }
@@ -79,18 +79,18 @@
   </style>
 </head>
 <body>
-
   <div class="particles" id="particles"></div>
 
-  <h1>Todo estará bien 💜</h1>
-  <h1>No estás sola</h1>
-
-  <div class="gif-message">
-    <img src="https://media.tenor.com/W3DdZiU2hmcAAAAC/hug-kiss-love.gif" alt="Abrazo reconfortante">
+  <div class="container">
+    <div class="message" id="msg1"><h1>Todo estará bien 💜</h1></div>
+    <div class="message" id="msg2"><h1>No estás sola</h1></div>
+    <div class="gif-container" id="gif">
+      <img src="https://media.tenor.com/W3DdZiU2hmcAAAAC/hug-kiss-love.gif" alt="Abrazo reconfortante">
+    </div>
   </div>
 
   <script>
-    // Partículas animadas
+    // Crear partículas
     const container = document.getElementById('particles');
     for (let i = 0; i < 80; i++) {
       const p = document.createElement('div');
@@ -101,7 +101,36 @@
       p.style.animationDelay = `${Math.random() * 5}s`;
       container.appendChild(p);
     }
-  </script>
 
+    // Secuencia de animaciones
+    const msg1 = document.getElementById('msg1');
+    const msg2 = document.getElementById('msg2');
+    const gif = document.getElementById('gif');
+
+    let step = 0;
+
+    function cycle() {
+      msg1.classList.remove('show');
+      msg2.classList.remove('show');
+      gif.classList.remove('show');
+
+      switch (step % 3) {
+        case 0:
+          msg1.classList.add('show');
+          break;
+        case 1:
+          msg2.classList.add('show');
+          break;
+        case 2:
+          gif.classList.add('show');
+          break;
+      }
+
+      step++;
+      setTimeout(cycle, 4000);
+    }
+
+    cycle();
+  </script>
 </body>
 </html>
